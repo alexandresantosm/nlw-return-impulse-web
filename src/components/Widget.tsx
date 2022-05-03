@@ -1,5 +1,5 @@
-import { ChatTeardropDots } from 'phosphor-react'
-import { Popover } from '@headlessui/react'
+import { ChatTeardropDots } from 'phosphor-react';
+import { Popover } from '@headlessui/react';
 
 export const Widget: React.FC = () => {
   return (
@@ -14,5 +14,5 @@ export const Widget: React.FC = () => {
         </span>
       </Popover.Button>
     </Popover>
-  )
-}
+  );
+};

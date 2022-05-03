@@ -1,5 +1,5 @@
-import { Avatar } from './Avatar'
-import { Icon } from './Icon'
+import { Avatar } from './Avatar';
+import { Icon } from './Icon';
 
 export const Profle: React.FC = () => {
   return (
@@ -8,5 +8,5 @@ export const Profle: React.FC = () => {
       <Icon />
       <Avatar />
     </div>
-  )
-}
+  );
+};
