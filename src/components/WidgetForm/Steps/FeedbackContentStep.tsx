@@ -1,4 +1,6 @@
 import { FormEvent, useState } from 'react';
+
+import { api } from '../../../lib/api';
 import { FeedbackType, feedbackTypes } from '../../../utils/feedback-data';
 import {
   BackButton,
@@ -15,6 +17,7 @@ interface FeedbackContentStepProps {
 
 const INITIAL_SCREENSHOT_STATE = null;
 const INITIAL_COMMENT_STATE = '';
+const INITIAL_SENDING_FEEDBACK_STATE = false;
 
 export const FeedbackContentStep: React.FC<FeedbackContentStepProps> = ({
   feedbackType,
@@ -24,19 +27,27 @@ export const FeedbackContentStep: React.FC<FeedbackContentStepProps> = ({
   const [screenshot, setScreenshot] = useState<string | null>(
     INITIAL_SCREENSHOT_STATE,
   );
-  const [comment, setComment] = useState<string>(INITIAL_COMMENT_STATE);
+  const [comment, setComment] = useState(INITIAL_COMMENT_STATE);
+  const [isSendingFeedback, setIsSendingFeedback] = useState(
+    INITIAL_SENDING_FEEDBACK_STATE,
+  );
 
   const handleRestartScreenshot = () => setScreenshot(INITIAL_SCREENSHOT_STATE);
 
   const feedbackTypeInfo = feedbackTypes[feedbackType];
 
-  const handleSubmitFeedback = (event: FormEvent) => {
+  const handleSubmitFeedback = async (event: FormEvent) => {
     event.preventDefault();
 
-    console.log({
-      screenshot,
+    setIsSendingFeedback(true);
+
+    await api.post('/feedbacks', {
+      type: feedbackType,
       comment,
+      screenshot,
     });
+
+    setIsSendingFeedback(INITIAL_SENDING_FEEDBACK_STATE);
 
     onFeedbackSent();
   };
@@ -71,7 +82,10 @@ export const FeedbackContentStep: React.FC<FeedbackContentStepProps> = ({
             onScreenshotTook={setScreenshot}
             onScreenshotRestartRequest={handleRestartScreenshot}
           />
-          <SubmitFeedbackButton comment={comment} />
+          <SubmitFeedbackButton
+            comment={comment}
+            isSendidngFeedback={isSendingFeedback}
+          />
         </footer>
       </form>
     </>
